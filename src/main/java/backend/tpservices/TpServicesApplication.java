@@ -1,7 +1,9 @@
 package backend.tpservices;
 
-import backend.tpservices.Models.Client;
+import backend.tpservices.Models.Embedded.Contact;
+import backend.tpservices.Models.UserTypes.Client;
 import backend.tpservices.Repositories.ClientRepository;
+import backend.tpservices.Repositories.ContactRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -19,9 +21,15 @@ public class TpServicesApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(ClientRepository repository){
-		return (args -> {
-			repository.save(new Client("Bojack", "Horseman")); // db moze byt naplnena tu
+	public CommandLineRunner demo(ClientRepository clientRepo, ContactRepository contactRepo){
+		return (args -> { // db moze byt naplnena tu
+			Client client = new Client();
+			Contact contact = new Contact("Bojack", "Horseman","+421 452 654 280");
+			client.setContact(contact);
+
+			contactRepo.save(contact);
+			clientRepo.save(client);
+
 			//repository.save(new Client("Bojack", "Horsemano"));
 //			repository.save(new Client("Mr.", "PeanutButter"));
 /*

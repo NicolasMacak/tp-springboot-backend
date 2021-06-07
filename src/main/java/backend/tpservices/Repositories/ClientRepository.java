@@ -1,9 +1,7 @@
 package backend.tpservices.Repositories;
 
-import backend.tpservices.Models.Client;
+import backend.tpservices.Models.UserTypes.Client;
 import org.springframework.data.repository.CrudRepository;
-
-import java.util.List;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
 /*

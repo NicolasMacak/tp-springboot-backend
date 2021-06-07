@@ -1,5 +1,5 @@
 package backend.tpservices.Controllers;
-import backend.tpservices.Models.Client;
+import backend.tpservices.Models.UserTypes.Client;
 import backend.tpservices.Services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

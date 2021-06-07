@@ -1,6 +1,6 @@
 package backend.tpservices.Services;
 
-import backend.tpservices.Models.Client;
+import backend.tpservices.Models.UserTypes.Client;
 import backend.tpservices.Repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
