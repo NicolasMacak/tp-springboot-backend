@@ -24,7 +24,7 @@ public class TpServicesApplication {
 	public CommandLineRunner demo(ClientRepository clientRepo, ContactRepository contactRepo){
 		return (args -> { // db moze byt naplnena tu
 			Client client = new Client();
-			Contact contact = new Contact("Bojack", "Horseman","+421 452 654 280");
+			Contact contact = new Contact("Bojack", "Horseman","+421 452 654 280", "checkni.to@dost.cool", "Jablcko");
 			client.setContact(contact);
 
 			contactRepo.save(contact);
