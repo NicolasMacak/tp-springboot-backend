@@ -15,7 +15,7 @@ Na db sa pripája cez tento link: http://localhost:8080/h2-console/login.jsp
 Hodí ťa to potom sem a úplne zadarmo si môžeš nastaviť slovenský jazyk. Zadáš intel z config súboru a vybafčo. <br>
 ![image](https://user-images.githubusercontent.com/45353526/121642980-8d9edf00-ca91-11eb-8f25-f4b4f4fa718a.png)
 
-<hr>
+## Odrazový mostík
 
 Čítal som si nejaké veci a toto je nejaký rešerš.
 <b> Controller </b> <br> najvrchnejšia úroveň logiky. Validuje vstupy, obsahuje logiku na výber správnych parametrov do service funcií. Môže pracovať s viacerými servicami. <br>
