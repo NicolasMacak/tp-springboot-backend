@@ -16,8 +16,6 @@ public class ClientService {
 
     @Autowired
     ClientRepository clientRepository;
-    @Autowired
-    ContactRepository contactRepository;
 
     public List<Client> getAllClients(){
         List<Client> clients = new ArrayList<>();
@@ -33,7 +31,6 @@ public class ClientService {
         Client client = new Client();
         client.setContact(contact);
 
-        contactRepository.save(contact);
         clientRepository.save(client);
     }
 
@@ -41,10 +38,7 @@ public class ClientService {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if(optionalClient.isEmpty()){ return false; }
 
-        Client clientToRemove = optionalClient.get();
-
-        //contactRepository.delete(clientToRemove.getContact());
-        clientRepository.delete(clientToRemove);
+        clientRepository.delete(optionalClient.get());
         return true;
     }
 }

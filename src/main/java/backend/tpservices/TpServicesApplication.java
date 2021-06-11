@@ -21,13 +21,12 @@ public class TpServicesApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(ClientRepository clientRepo, ContactRepository contactRepo){
+	public CommandLineRunner demo(ClientRepository clientRepo){
 		return (args -> { // db moze byt naplnena tu
 			Client client = new Client();
 			Contact contact = new Contact("Bojack", "Horseman","+421 452 654 280", "checkni.to@dost.cool", "Jablcko");
 			client.setContact(contact);
 
-			contactRepo.save(contact);
 			clientRepo.save(client);
 
 			//repository.save(new Client("Bojack", "Horsemano"));

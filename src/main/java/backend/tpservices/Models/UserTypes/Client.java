@@ -12,9 +12,8 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-
-    @OneToOne()
+    
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Contact contact;
 
     public Client() {}
