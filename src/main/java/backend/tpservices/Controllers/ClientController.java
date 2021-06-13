@@ -28,14 +28,25 @@ public class ClientController {
     }
 
     @PostMapping()
-    private ResponseEntity<String> addClient(@RequestBody Contact contact){
+    private ResponseEntity<String> addClient(@RequestBody Client client){
 
-        if(contact.isInvalid()) {
+        if(client.getContact().isInvalid()) {
             return new ResponseEntity<String>("Invalid contact fields", HttpStatus.BAD_REQUEST);
         }
 
-        clientService.insertClientToDb(contact);
+        clientService.insertClientToDb(client);
         return new ResponseEntity<String>("User added", HttpStatus.OK);
+    }
+
+    @PutMapping()
+    private ResponseEntity<String> modifyClient(@RequestBody Client client){
+
+        if(client.getContact().isInvalid()) {
+            return new ResponseEntity<String>("Invalid contact fields", HttpStatus.BAD_REQUEST);
+        }
+
+        clientService.modifyClient(client);
+        return new ResponseEntity<String>("User modified", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{userId}")
