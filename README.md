@@ -57,6 +57,6 @@ Ejkejej, automaticky sa vytvoria inštancie objektov ktoré sú označené s @Au
 <b>View -> Tool Windows -> Database -> + -> Data Source -> PostgreSQL</b>
 
 ### Extremny tutorial aj s obrazkom
-![extremny tutorial aj s obrazkom](db.png)
+![db](https://user-images.githubusercontent.com/49959692/121781234-1c9c1c00-cba4-11eb-9a42-b7afd70da152.png)
 
 Ono to pozna aj emoji, hen kukaj :pizza: :cherries: :sunflower: :scream_cat:
