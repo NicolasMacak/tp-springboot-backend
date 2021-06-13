@@ -1,6 +1,7 @@
 package backend.tpservices;
 
 import backend.tpservices.Models.Embedded.Contact;
+import backend.tpservices.Models.UserTypes.Client;
 import backend.tpservices.Services.ClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +23,19 @@ public class TpServicesApplication {
 	public CommandLineRunner demo(ClientService clientService){
 		return (args -> { // db moze byt naplnena tu
 
-			clientService.insertClientToDb(new Contact("Bojack", "Horseman","+421 452 654 280", "checkni.to@dost.cool", "Jablcko"));
-			clientService.insertClientToDb(new Contact("Norika", "Mojsejova","+421 123 123 123", "nevolajtemi@nepistemi.maily", "ding dong"));
+			clientService.insertClientToDb(
+					new Client(new Contact("Bojack",
+										   "Horseman",
+									    "+421 452 654 280",
+									          "checkni.to@dost.cool",
+										   "Jablcko")));
+
+			clientService.insertClientToDb(
+					new Client(new Contact("Norika",
+											"Mojsejova",
+							             "+421 123 123 123",
+											   "nevolajtemi@nepistemi.maily",
+											"ding dong")));
 
 //			Client client = new Client();
 //			Contact contact = new Contact("Bojack", "Horseman","+421 452 654 280", "checkni.to@dost.cool", "Jablcko");

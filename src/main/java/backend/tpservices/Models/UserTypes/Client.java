@@ -17,6 +17,7 @@ public class Client {
     private Contact contact;
 
     public Client() {}
+    public Client(Contact contact) { this.contact = contact;}
 
     public Long getId() { return id; }
     public Contact getContact() { return contact; }
