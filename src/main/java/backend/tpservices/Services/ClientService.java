@@ -31,11 +31,19 @@ public class ClientService {
     // tutok treba v ďalšom patchi transakcie, lebo tak sa to robí.
     // .save obsahuje transackiu. Zbytočne vytvárame 2 transakcie keď stačí jedna.
     // also, možno potom nejako nebudeme musieť realizovať contactRepository.
-    public void insertClientToDb(Contact contact){
-        Client client = new Client();
-        client.setContact(contact);
+    public void insertClientToDb(Client client){
+      /*  Client client = new Client();
+        client.setContact(client);*/
 
         clientRepository.save(client);
+    }
+
+    public void modifyClient(Client client){ // index contactu sa updatuje. asi si myslí že je to nový record či čo
+        Optional<Client> optionalClient = clientRepository.findById(client.getId());
+        if(optionalClient.isEmpty()){ return; }
+
+        optionalClient.get().setContact(client.getContact());
+        clientRepository.save(optionalClient.get());
     }
 
     public boolean deleteClient(Long id){

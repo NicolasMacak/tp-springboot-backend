@@ -39,18 +39,30 @@ public class ClientController {
     }
 
     @PostMapping()
-    private ResponseEntity<SuccessObject> addClient(@RequestBody Contact contact) throws InvalidObjectException {
-        if(contact.isInvalid()) {
+    private ResponseEntity<SuccessObject> addClient(@RequestBody Client client) throws InvalidObjectException {
+
+        if(client.getContact().isInvalid()) {
             // ak by sme chceli byt strasne fancy, mohli by sme dat do response ake fieldy su zle
             throw new InvalidObjectException("Invalid contact fields");
         }
-        clientService.insertClientToDb(contact);
+        clientService.insertClientToDb(client);
         SuccessObject success = new SuccessObject(HttpStatus.OK,
                 "User " + client.getContact().getFirstName()
                         + " " + client.getContact().getLastName()
                         + " successfully added");
 
         return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
+    @PutMapping()
+    private ResponseEntity<String> modifyClient(@RequestBody Client client){
+
+        if(client.getContact().isInvalid()) {
+            return new ResponseEntity<String>("Invalid contact fields", HttpStatus.BAD_REQUEST);
+        }
+
+        clientService.modifyClient(client);
+        return new ResponseEntity<String>("User modified", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{userId}")
