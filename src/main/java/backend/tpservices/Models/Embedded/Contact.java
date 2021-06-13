@@ -31,7 +31,7 @@ public class Contact {
     public Boolean isInvalid(){
         boolean  isValid = true;
 
-        isValid &=  Pattern.matches(Constants.Regex.StringWithSpaces, firstName);
+        isValid &= Pattern.matches(Constants.Regex.StringWithSpaces, firstName);
         isValid &= Pattern.matches(Constants.Regex.StringWithSpaces, lastName);
         isValid &= Pattern.matches(Constants.Regex.GlobalNumberFormat, phoneNumber);
         isValid &= Pattern.matches(Constants.Regex.Email, email);
@@ -52,4 +52,16 @@ public class Contact {
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
     public void setEmail(String email) { this.email = email; }
     public void setPassword(String password) { this.password = password; }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
