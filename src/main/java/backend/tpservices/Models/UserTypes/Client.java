@@ -25,6 +25,10 @@ public class Client {
         this.contact = contact;
     }
 
+    public void update(Client client){
+        this.contact.update(client.getContact());
+    }
+
     @Override
     public String toString() { return "Client{" + "id=" + id + ", contact=" + contact + '}'; }
 }
