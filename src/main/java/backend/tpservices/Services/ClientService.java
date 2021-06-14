@@ -34,12 +34,12 @@ public class ClientService {
         clientRepository.save(client);
     }
 
-    public void modifyClient(Client client){ // index contactu sa updatuje. asi si myslí že je to nový record či čo
-        Optional<Client> optionalClient = clientRepository.findById(client.getId());
-        if(optionalClient.isEmpty()){ return; }
+    public void modifyClient(Client client){
+        Optional<Client> dbClient = clientRepository.findById(client.getId());
+        if(dbClient.isEmpty()) { return; }
 
-        optionalClient.get().setContact(client.getContact());
-        clientRepository.save(optionalClient.get());
+        dbClient.get().update(client);
+        clientRepository.save(dbClient.get());
     }
 
     public boolean deleteClient(Long id){

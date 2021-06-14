@@ -40,6 +40,15 @@ public class Contact {
         return !isValid;
     }
 
+    public void update(Contact contact){
+        this.id = contact.getId();
+        this.firstName = contact.getFirstName();
+        this.lastName = contact.getLastName();
+        this.phoneNumber = contact.getPhoneNumber();
+        this.email = contact.getEmail();
+        this.password = contact.getPassword();
+    }
+
     public Long getId() { return id; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
@@ -47,6 +56,7 @@ public class Contact {
     public String getEmail() { return email; }
     public String getPassword() { return password; }
 
+    public void setId(Long id) { this.id = id; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }

@@ -36,4 +36,8 @@ public class Client {
     public void setContact(Contact contact) {
         this.contact = contact;
     }
+
+    public void update(Client client){
+        this.contact.update(client.getContact());
+    }
 }
