@@ -26,7 +26,7 @@ public class TpServicesApplication {
 			clientService.insertClientToDb(
 					new Client(new Contact("Bojack",
 										   "Horseman",
-									    "+421 452 654 280",
+									    "+421452654280",
 									          "checkni.to@dost.cool",
 										   "Jablcko")));
 
