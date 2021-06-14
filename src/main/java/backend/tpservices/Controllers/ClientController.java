@@ -1,16 +1,18 @@
 package backend.tpservices.Controllers;
 import backend.tpservices.Models.Embedded.Contact;
+import backend.tpservices.Models.General.SuccessObject;
 import backend.tpservices.Models.UserTypes.Client;
 import backend.tpservices.Services.ClientService;
 import backend.tpservices.TpServicesApplication;
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import javax.persistence.NoResultException;
+import java.io.InvalidObjectException;
+import java.rmi.NoSuchObjectException;
 import java.util.List;
 
 //import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -24,18 +26,32 @@ public class ClientController {
 
     @GetMapping()
     private List<Client> getAllClients(){
-        return clientService.getAllClients();
+        // tuto mozeme a nemusime hodit error
+        // bud vratime prazdny list [] alebo vratime 204 No Content a nevrati sa vobec nic
+        return clientService.getAllClients().orElseThrow(NoResultException::new);
+    }
+
+    @GetMapping(value = "/{userId}")
+    private Client getClientById(@PathVariable final Long userId) throws NoSuchObjectException {
+        return clientService
+                .getClientById(userId)
+                .orElseThrow(() -> new NoSuchObjectException("Client with id = "+userId+" not found"));
     }
 
     @PostMapping()
-    private ResponseEntity<String> addClient(@RequestBody Client client){
+    private ResponseEntity<SuccessObject> addClient(@RequestBody Client client) throws InvalidObjectException {
 
         if(client.getContact().isInvalid()) {
-            return new ResponseEntity<String>("Invalid contact fields", HttpStatus.BAD_REQUEST);
+            // ak by sme chceli byt strasne fancy, mohli by sme dat do response ake fieldy su zle
+            throw new InvalidObjectException("Invalid contact fields");
         }
-
         clientService.insertClientToDb(client);
-        return new ResponseEntity<String>("User added", HttpStatus.OK);
+        SuccessObject success = new SuccessObject(HttpStatus.OK,
+                "User " + client.getContact().getFirstName()
+                        + " " + client.getContact().getLastName()
+                        + " successfully added");
+
+        return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
     @PutMapping()
@@ -50,11 +66,12 @@ public class ClientController {
     }
 
     @DeleteMapping(value = "/{userId}")
-    private ResponseEntity<String> deleteClient(@PathVariable final Long userId){
-        if(clientService.deleteClient(userId)){
-            return new ResponseEntity<String>("User deleted", HttpStatus.OK);
+    private ResponseEntity<SuccessObject> deleteClient(@PathVariable final Long userId) throws NoSuchObjectException {
+        if(clientService.deleteClient(userId)) {
+            SuccessObject success = new SuccessObject(HttpStatus.OK,
+                    "User with id = " + userId + " successfully deleted");
+            return new ResponseEntity<>(success, HttpStatus.OK);
         }
-
-        return new ResponseEntity<String>("An error occured", HttpStatus.INTERNAL_SERVER_ERROR);// toto sa mi nelubi. chcem posielat oznamy zo service. Nech viem povedat presne co sa pokazilo
+        throw new NoSuchObjectException("Client with id = "+userId+" not found");
     }
 }

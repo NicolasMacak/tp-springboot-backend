@@ -1,0 +1,17 @@
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Dikicko random tutorial za template</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Vskutku nepríjemná situácia</h1>
+    <div class="alert alert-danger" role="alert">
+        <b>Status:</b> <span th:text="${status}">status</span> <br>
+        <b>Error:</b> <span th:text="${error}">error</span> <br>
+        <b>Message:</b> <span th:text="${message}">message</span>
+    </div>
+</div>
+</body>
+
+</html>

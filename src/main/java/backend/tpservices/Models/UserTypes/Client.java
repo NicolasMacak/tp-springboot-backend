@@ -17,27 +17,14 @@ public class Client {
     private Contact contact;
 
     public Client() {}
-/*
-    public Client(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }*/
-/*
-    @Override
-    public String toString() {
-        return String.format(
-                "Client[id=%d, firstName='%s', lastName='%s']",
-                id, firstName, lastName);
-    }
-*/
+    public Client(Contact contact) { this.contact = contact;}
+
     public Long getId() { return id; }
     public Contact getContact() { return contact; }
-
     public void setContact(Contact contact) {
         this.contact = contact;
     }
 
-    public void update(Client client){
-        this.contact.update(client.getContact());
-    }
+    @Override
+    public String toString() { return "Client{" + "id=" + id + ", contact=" + contact + '}'; }
 }

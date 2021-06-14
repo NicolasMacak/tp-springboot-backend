@@ -17,11 +17,15 @@ public class ClientService {
     @Autowired
     ClientRepository clientRepository;
 
-    public List<Client> getAllClients(){
+    public Optional<List<Client>> getAllClients(){
         List<Client> clients = new ArrayList<>();
 
         clientRepository.findAll().forEach(clients::add); // dlhsi zapis je .foreach(client -> clients.add(client)) (brave new world)
-        return clients;
+        return Optional.ofNullable(clients.isEmpty()? null : clients);
+    }
+
+    public Optional<Client> getClientById(Long id){
+        return clientRepository.findById(id);
     }
 
     // tutok treba v ďalšom patchi transakcie, lebo tak sa to robí.
@@ -45,7 +49,6 @@ public class ClientService {
     public boolean deleteClient(Long id){
         Optional<Client> optionalClient = clientRepository.findById(id);
         if(optionalClient.isEmpty()){ return false; }
-
         clientRepository.delete(optionalClient.get());
         return true;
     }
