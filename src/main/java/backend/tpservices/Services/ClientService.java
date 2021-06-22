@@ -1,11 +1,10 @@
 package backend.tpservices.Services;
 
-import backend.tpservices.Models.Embedded.Contact;
 import backend.tpservices.Models.UserTypes.Client;
 import backend.tpservices.Repositories.ClientRepository;
-import backend.tpservices.Repositories.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +30,17 @@ public class ClientService {
     // tutok treba v ďalšom patchi transakcie, lebo tak sa to robí.
     // .save obsahuje transackiu. Zbytočne vytvárame 2 transakcie keď stačí jedna.
     // also, možno potom nejako nebudeme musieť realizovať contactRepository.
+
+    // neviem ci to staci iba takto, tutorialy hovorili ze hej.
+    // popravde nevidim rozdiel ked tam tato anotacia je alebo nie :D
+    @Transactional
     public void insertClientToDb(Client client){
       /*  Client client = new Client();
         client.setContact(client);*/
 
         clientRepository.save(client);
     }
-
+    @Transactional
     public void modifyClient(Client client){
         Optional<Client> dbClient = clientRepository.findById(client.getId());
         if(dbClient.isEmpty()) { return; }
@@ -45,7 +48,7 @@ public class ClientService {
         dbClient.get().update(client);
         clientRepository.save(dbClient.get());
     }
-
+    @Transactional
     public boolean deleteClient(Long id){
         Optional<Client> optionalClient = clientRepository.findById(id);
         if(optionalClient.isEmpty()){ return false; }

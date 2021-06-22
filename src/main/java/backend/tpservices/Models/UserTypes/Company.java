@@ -1,13 +1,15 @@
 package backend.tpservices.Models.UserTypes;
 import Config.Constants.*;
 import backend.tpservices.Models.Embedded.Address;
+import backend.tpservices.Models.Embedded.Reviews.CompanyReview;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Entity
-@Table  
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,12 +22,15 @@ public class Company {
     @Temporal(TemporalType.DATE)
     private Date creationDate;
 
-     @OneToOne(orphanRemoval = true, cascade = CascadeType.PERSIST)
-     private Address address;
-//    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.PERSIST)
+    private Address address;
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "company_id")
+    private List<CompanyReview> reviewList = new ArrayList<>();;
+
+//    @OneToMany(cascade = CascadeType.PERSIST)
 //    private List<Product> productList;
-//    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
-//    private List<Branch> branchList;
 
     public Company(){}
     public Company(String name, CompanyType type, String ico, String dic, String icDPH, Date creationDate) {
@@ -36,15 +41,15 @@ public class Company {
         this.icDPH = icDPH;
         this.creationDate = creationDate;
     }
-     public Company(String name, CompanyType type, String ico, String dic, String icDPH,
-                    Date creationDate, Address address) {
-         this.name = name;
-         this.type = type;
-         this.ico = ico;
-         this.dic = dic;
-         this.icDPH = icDPH;
-         this.creationDate = creationDate;
-         this.address = address;
+    public Company(String name, CompanyType type, String ico, String dic,
+                   String icDPH, Date creationDate, Address address) {
+        this.name = name;
+        this.type = type;
+        this.ico = ico;
+        this.dic = dic;
+        this.icDPH = icDPH;
+        this.creationDate = creationDate;
+        this.address = address;
      }
 
     public boolean isValid() {
@@ -63,7 +68,7 @@ public class Company {
                 (this.icDPH == null || Pattern.matches(Regex.IcDPH, this.icDPH));
     }
 
-    public void update(Company company){
+    public void update(Company company) {
 
         this.name = company.getName() != null ? company.getName() : this.name;
         this.type = company.getType() != null ? company.getType() : this.type;
@@ -71,12 +76,10 @@ public class Company {
         this.dic = company.getDic() != null ? company.getDic() : this.dic;
         this.icDPH = company.getIcDPH() != null ? company.getIcDPH() : this.icDPH;
         this.creationDate = company.getCreationDate() != null ? company.getCreationDate() : this.creationDate;
-
         this.address.update(company.getAddress());
-
-
-
     }
+
+    public void addReview(CompanyReview review) { this.reviewList.add(review);}
 
     //-------------------------------------------------
 
@@ -123,6 +126,9 @@ public class Company {
      public void setAddress(Address address) {
          this.address = address;
      }
+    public List<CompanyReview> getReviewList() {
+        return reviewList;
+    }
 
     @Override
     public String toString() {

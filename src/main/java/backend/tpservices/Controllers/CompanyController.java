@@ -3,7 +3,9 @@ package backend.tpservices.Controllers;
 import java.io.InvalidObjectException;
 import java.rmi.NoSuchObjectException;
 import java.util.List;
+import java.util.Optional;
 
+import backend.tpservices.Models.Embedded.Reviews.CompanyReview;
 import backend.tpservices.Models.UserTypes.Company;
 import backend.tpservices.Services.CompanyService;
 import backend.tpservices.Models.General.SuccessObject;
@@ -33,6 +35,19 @@ public class CompanyController {
                                                                           companyId + " not found"));
     }
 
+    @GetMapping("/{companyId}/review")
+    private List<CompanyReview> getReviewsById(@PathVariable("companyId") Long companyId) throws NoSuchObjectException {
+        Optional<Company> optCompany = companyService.getCompanyById(companyId);
+        if (optCompany.isPresent()) {
+
+            List<CompanyReview> reviews = optCompany.get().getReviewList();
+            if(reviews.isEmpty()) throw new NoResultException();
+
+            return reviews;
+        }
+        throw new NoSuchObjectException("Company with companyId = " + companyId + " not found");
+    }
+
     @PostMapping()
     private ResponseEntity<SuccessObject> addCompany(@RequestBody Company company) throws InvalidObjectException {
 
@@ -45,6 +60,20 @@ public class CompanyController {
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
+    @PostMapping("/{companyId}/review")
+    private ResponseEntity<SuccessObject> addReview(@PathVariable("companyId") Long companyId,
+                                                    @RequestBody CompanyReview review) throws InvalidObjectException, NoSuchObjectException {
+
+        if(!review.isValid()) throw new InvalidObjectException("Invalid review fields");
+
+        if (companyService.addCompanyReview(companyId,review)) {
+            SuccessObject success = new SuccessObject(HttpStatus.OK,
+                                              "Review successfully added");
+            return new ResponseEntity<>(success, HttpStatus.OK);
+        }
+        throw new NoSuchObjectException("Company with companyId = "+ companyId +" not found");
+    }
+
     @DeleteMapping("/{companyId}")
     private ResponseEntity<SuccessObject> deleteCompany(@PathVariable("companyId") Long companyId) throws NoSuchObjectException {
         if(companyService.deleteCompany(companyId)) {
@@ -54,7 +83,6 @@ public class CompanyController {
         }
         throw new NoSuchObjectException("Company with companyId = "+ companyId +" not found");
     }
-
 
     @PutMapping()
     public ResponseEntity<SuccessObject> modifyCompany(@RequestBody Company company) throws InvalidObjectException, NoSuchObjectException {
