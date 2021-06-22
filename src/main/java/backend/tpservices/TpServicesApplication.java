@@ -40,7 +40,13 @@ public class TpServicesApplication {
 					.authorizeRequests()
 					.antMatchers(HttpMethod.POST, "/login").permitAll()
 					.anyRequest().authenticated();*/
+
+			http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
+					.and().csrf().ignoringAntMatchers("/h2-console/**")
+					.and().headers().frameOptions().sameOrigin();
 		}
+
+
 	}
 
 	@Bean
