@@ -42,4 +42,10 @@ public class GlobalErrorsController {
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
 
+  //NullPointerException => 500 internal server error
+  @ExceptionHandler
+  public ResponseEntity<ErrorObject> niecoSaPosraloHandler(NullPointerException ex) {
+    ErrorObject error = new ErrorObject(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+    return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }
