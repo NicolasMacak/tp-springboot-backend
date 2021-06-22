@@ -28,9 +28,6 @@ public class ClientService {
         return clientRepository.findById(id);
     }
 
-    // tutok treba v ďalšom patchi transakcie, lebo tak sa to robí.
-    // .save obsahuje transackiu. Zbytočne vytvárame 2 transakcie keď stačí jedna.
-    // also, možno potom nejako nebudeme musieť realizovať contactRepository.
     public void insertClientToDb(Client client){
       /*  Client client = new Client();
         client.setContact(client);*/
