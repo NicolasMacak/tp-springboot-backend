@@ -71,6 +71,8 @@ public class TpServicesApplication {
 			ratings.add(new Rating("Ta ten najlepsi", 5));
 
 			productService.insertProductToDb(new Product(
+					Product.Category.clothes,
+					Product.State.inStorage,
 					"Norkovany kozuch",
 					500000.0,
 					"Kozuch z norky",

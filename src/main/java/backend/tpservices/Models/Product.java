@@ -7,14 +7,14 @@ import java.util.List;
 @Table(name = "Products")
 public class Product {
 
-    enum State {
+   public enum State {
         inStorage,
         sold,
         ReadyToOrder,
         presale
     }
 
-    enum Category {
+   public enum Category {
         electronics,
         whiteGoods,
         houseAndGarden,
@@ -31,14 +31,19 @@ public class Product {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    Category category;
+    State state;
     String title;
     Double price;
     String description;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "PRODUCT_ID")
     List<Rating> ratings;
 
-    public Product(String title, Double price, String description, List<Rating> ratings) {
+    public Product(Category category, State state, String title, Double price, String description, List<Rating> ratings) {
+        this.category = category;
+        this.state = state;
         this.title = title;
         this.price = price;
         this.description = description;
