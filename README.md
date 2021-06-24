@@ -1,4 +1,4 @@
-## H2 Recent záležitosti
+## Recent záležitosti
 Podľa mňa by sme mali vždy vracať ResponseEntity. Niekedy to otvára nové možnosti. Napríklad poslanie 204 (no content) ak neexistujú žiadne produkty.
 Trošku som sa vyhaluzil s verifikáciou fieldov. Keď niečo zadáš zle, hodí to error popisujúci čo je zle a kde. vcelku sa mi to pozdáva. Možno sa to dá spraviť elegantnejšie tho.
 <br>
