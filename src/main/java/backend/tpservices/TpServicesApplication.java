@@ -4,6 +4,7 @@ import backend.tpservices.Models.Embedded.Contact;
 import backend.tpservices.Models.Product;
 import backend.tpservices.Models.Rating;
 import backend.tpservices.Models.UserTypes.Client;
+import backend.tpservices.Security.JWTAuthorizationFilter;
 import backend.tpservices.Services.ClientService;
 import backend.tpservices.Services.ProductService;
 import org.slf4j.Logger;
@@ -13,14 +14,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
+
 public class TpServicesApplication {
 
 	private static final Logger log = LoggerFactory.getLogger(TpServicesApplication.class);
@@ -29,22 +34,27 @@ public class TpServicesApplication {
 		SpringApplication.run(TpServicesApplication.class, args);
 	}
 
-	@EnableWebSecurity
+	//@EnableWebSecurity
 	@Configuration
 	class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			http.csrf().disable();
-					/*.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-					.authorizeRequests()
-					.antMatchers(HttpMethod.POST, "/login").permitAll()
-					.anyRequest().authenticated();*/
-
-			http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
-					.and().csrf().ignoringAntMatchers("/h2-console/**")
-					.and().headers().frameOptions().sameOrigin();
+		public void configure(WebSecurity web) throws Exception {
+			web.ignoring().antMatchers("/**");
 		}
+
+//		@Override
+//		protected void configure(HttpSecurity http) throws Exception {
+//			http.csrf().disable()
+//					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+//					.authorizeRequests()
+//					.antMatchers(HttpMethod.POST, "/login").permitAll()
+//					.anyRequest().authenticated();
+//
+//			http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
+//					.and().csrf().ignoringAntMatchers("/h2-console/**")
+//					.and().headers().frameOptions().sameOrigin();
+//		}
 
 
 	}

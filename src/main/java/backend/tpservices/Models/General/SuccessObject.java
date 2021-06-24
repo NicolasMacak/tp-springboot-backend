@@ -14,11 +14,6 @@ public class SuccessObject {
         this.message = message;
     }
 
-    public SuccessObject(Object data){
-        this.status = HttpStatus.OK.value();
-        this.data = data;
-    }
-
     public int getStatus() {
         return status;
     }

@@ -25,21 +25,21 @@ public class ClientController {
     ClientService clientService;
 
     @GetMapping()
-    private ResponseEntity<SuccessObject> getAllClients(){
+    private ResponseEntity<List<Client>> getAllClients(){
         List<Client> clients = clientService.getAllClients().orElseThrow(NoResultException::new);
 
         return clients.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT):
-                                   new ResponseEntity<>(new SuccessObject(clients), HttpStatus.OK);
+                                   new ResponseEntity<>(clients, HttpStatus.OK);
 
     }
 
     @GetMapping(value = "/{userId}")
-    private ResponseEntity<SuccessObject> getClientById(@PathVariable final Long userId) throws NoSuchObjectException {
+    private ResponseEntity<Client> getClientById(@PathVariable final Long userId) throws NoSuchObjectException {
         Client client = clientService
                 .getClientById(userId)
                 .orElseThrow(() -> new NoSuchObjectException("Client with id = "+userId+" not found"));
 
-        return new ResponseEntity<>(new SuccessObject(client), HttpStatus.OK);
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
     @PostMapping()
