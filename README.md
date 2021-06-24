@@ -4,6 +4,8 @@ Trošku som sa vyhaluzil s verifikáciou fieldov. Keď niečo zadáš zle, hodí
 <br>
 Asi musíme nejako pobrainstormovať architektúru projektu. Podľa mňa je to škaredé :D 
 Napadlo mi že by sme mali priečinok pre každý model a v ňom by sme mali prislúchajúce repository, service a controller. 
+<br>
+Also treba zrealizovať filtrovanie a stránkovanie záznamov. To bude fun :D 
 
 ## H2 databejs
 Táto H2 configurácie je strašne naspeedovaná, pretože je v memory. Ale vymaže sa po tom ako stopneš service.
