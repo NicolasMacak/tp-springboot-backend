@@ -3,10 +3,13 @@ package backend.tpservices;
 import Config.Constants;
 import backend.tpservices.Models.Embedded.Address;
 import backend.tpservices.Models.Embedded.Contact;
+import backend.tpservices.Models.Product;
+import backend.tpservices.Models.Rating;
 import backend.tpservices.Models.UserTypes.Client;
 import backend.tpservices.Models.UserTypes.Company;
 import backend.tpservices.Services.ClientService;
 import backend.tpservices.Services.CompanyService;
+import backend.tpservices.Services.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -14,19 +17,25 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.Date;
 
 @SpringBootApplication
+
 public class TpServicesApplication {
 
 	private static final Logger log = LoggerFactory.getLogger(TpServicesApplication.class);
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(TpServicesApplication.class, args);
 	}
 
@@ -35,23 +44,28 @@ public class TpServicesApplication {
 	class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			http.csrf().disable();
-					/*.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-					.authorizeRequests()
-					.antMatchers(HttpMethod.POST, "/login").permitAll()
-					.anyRequest().authenticated();*/
-
-			http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
-					.and().csrf().ignoringAntMatchers("/h2-console/**")
-					.and().headers().frameOptions().sameOrigin();
+		public void configure(WebSecurity web) throws Exception {
+			web.ignoring().antMatchers("/**");
 		}
+
+//		@Override
+//		protected void configure(HttpSecurity http) throws Exception {
+//			http.csrf().disable()
+//					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+//					.authorizeRequests()
+//					.antMatchers(HttpMethod.POST, "/login").permitAll()
+//					.anyRequest().authenticated();
+//
+//			http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
+//					.and().csrf().ignoringAntMatchers("/h2-console/**")
+//					.and().headers().frameOptions().sameOrigin();
+//		}
 
 
 	}
 
 	@Bean
-	public CommandLineRunner demo(ClientService clientService, CompanyService companyService){
+	public CommandLineRunner demo(ClientService clientService, CompanyService companyService, ProductService productService){
 		return (args -> { // db moze byt naplnena tu
 
 			clientService.insertClientToDb(
@@ -74,10 +88,19 @@ public class TpServicesApplication {
 								new Address("ulica","cislo","mesto", "00000")
 					)
 			);
-//
-//			System.out.println(clientService);
-//			System.out.println(companyService);
-//			companyService.getAllCompanies();
+
+			List<Rating> ratings = new ArrayList<>();
+			ratings.add(new Rating("Ta ten najlepsi", 5));
+
+			productService.insertProductToDb(new Product(
+					Product.Category.clothes,
+					Product.State.inStorage,
+					"Norkovany kozuch",
+					500000.0,
+					"Kozuch z norky",
+					ratings
+					));
+
 //			Client client = new Client();
 //			Contact contact = new Contact("Bojack", "Horseman","+421 452 654 280", "checkni.to@dost.cool", "Jablcko");
 //			client.setContact(contact);
@@ -85,15 +108,15 @@ public class TpServicesApplication {
 
 			//repository.save(new Client("Bojack", "Horsemano"));
 //			repository.save(new Client("Mr.", "PeanutButter"));
+/*
+			log.info("Clients found with findAll():");
 
-//			log.info("Clients found with findAll():");
-//
-//			for (Client client : repository.findAll()) {
-//				log.info(client.toString());
-//			}
-//			log.info("--------------------------------");
-//			Client client = repository.findByFirstName("Bojack");
-//			log.info(client.toString());
+			for (Client client : repository.findAll()) {
+				log.info(client.toString());
+			}
+			log.info("--------------------------------");
+			Client client = repository.findByFirstName("Bojack");
+			log.info(client.toString());*/
 		});
 	}
 }

@@ -25,17 +25,21 @@ public class ClientController {
     ClientService clientService;
 
     @GetMapping()
-    private List<Client> getAllClients(){
-        // tuto mozeme a nemusime hodit error
-        // bud vratime prazdny list [] alebo vratime 204 No Content a nevrati sa vobec nic
-        return clientService.getAllClients().orElseThrow(NoResultException::new);
+    private ResponseEntity<List<Client>> getAllClients(){
+        List<Client> clients = clientService.getAllClients().orElseThrow(NoResultException::new);
+
+        return clients.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT):
+                                   new ResponseEntity<>(clients, HttpStatus.OK);
+
     }
 
     @GetMapping(value = "/{userId}")
-    private Client getClientById(@PathVariable final Long userId) throws NoSuchObjectException {
-        return clientService
+    private ResponseEntity<Client> getClientById(@PathVariable final Long userId) throws NoSuchObjectException {
+        Client client = clientService
                 .getClientById(userId)
                 .orElseThrow(() -> new NoSuchObjectException("Client with id = "+userId+" not found"));
+
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
     @PostMapping()

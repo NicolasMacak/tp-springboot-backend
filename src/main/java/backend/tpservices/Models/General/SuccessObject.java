@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 public class SuccessObject {
     private int status;
     private String message;
+    private Object data;
 
     public SuccessObject(){}
 
@@ -19,4 +20,5 @@ public class SuccessObject {
     public String getMessage() {
         return message;
     }
+    public Object getObject() { return data; }
 }
