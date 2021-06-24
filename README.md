@@ -1,3 +1,10 @@
+## H2 Recent záležitosti
+Podľa mňa by sme mali vždy vracať ResponseEntity. Niekedy to otvára nové možnosti. Napríklad poslanie 204 (no content) ak neexistujú žiadne produkty.
+Trošku som sa vyhaluzil s verifikáciou fieldov. Keď niečo zadáš zle, hodí to error popisujúci čo je zle a kde. vcelku sa mi to pozdáva. Možno sa to dá spraviť elegantnejšie tho.
+<br>
+Asi musíme nejako pobrainstormovať architektúru projektu. Podľa mňa je to škaredé :D 
+Napadlo mi že by sme mali priečinok pre každý model a v ňom by sme mali prislúchajúce repository, service a controller. 
+
 ## H2 databejs
 Táto H2 configurácie je strašne naspeedovaná, pretože je v memory. Ale vymaže sa po tom ako stopneš service.
 Tiež sa na ňu nedá pripojiť cez intellij, pretože už je na ňu napojená runtime service.
