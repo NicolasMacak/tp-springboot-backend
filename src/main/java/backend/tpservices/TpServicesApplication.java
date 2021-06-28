@@ -1,15 +1,14 @@
 package backend.tpservices;
 
 import Config.Constants;
-import backend.tpservices.Models.Embedded.Address;
-import backend.tpservices.Models.Embedded.Contact;
-import backend.tpservices.Models.Product;
-import backend.tpservices.Models.Rating;
-import backend.tpservices.Models.UserTypes.Client;
-import backend.tpservices.Models.UserTypes.Company;
-import backend.tpservices.Services.ClientService;
-import backend.tpservices.Services.CompanyService;
-import backend.tpservices.Services.ProductService;
+import backend.tpservices.Modules.Address.Address;
+import backend.tpservices.Modules.Contact.Contact;
+import backend.tpservices.Modules.Product.Product;
+import backend.tpservices.Modules.Client.Client;
+import backend.tpservices.Modules.Company.Company;
+import backend.tpservices.Modules.Client.ClientService;
+import backend.tpservices.Modules.Company.CompanyService;
+import backend.tpservices.Modules.Product.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -17,15 +16,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import java.util.Date;
 
@@ -89,16 +82,12 @@ public class TpServicesApplication {
 					)
 			);
 
-			List<Rating> ratings = new ArrayList<>();
-			ratings.add(new Rating("Ta ten najlepsi", 5));
-
 			productService.insertProductToDb(new Product(
 					Product.Category.clothes,
 					Product.State.inStorage,
 					"Norkovany kozuch",
 					500000.0,
-					"Kozuch z norky",
-					ratings
+					"Kozuch z norky"
 					));
 
 //			Client client = new Client();
