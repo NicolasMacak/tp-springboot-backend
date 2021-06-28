@@ -1,6 +1,6 @@
 package backend.tpservices;
 
-import Config.Constants;
+import Config.Constants.*;
 import backend.tpservices.Modules.Address.Address;
 import backend.tpservices.Modules.Contact.Contact;
 import backend.tpservices.Modules.Product.Product;
@@ -76,15 +76,15 @@ public class TpServicesApplication {
 											"ding dong")));
 
 			companyService.insertCompanyToDb(
-					new Company("Dedoles", Constants.CompanyType.KS,"00000000",
+					new Company("Dedoles", CompanyType.KS,"00000000",
 								"0000000000","SK0000000000",new Date(),
 								new Address("ulica","cislo","mesto", "00000")
 					)
 			);
 
 			productService.insertProductToDb(new Product(
-					Product.Category.clothes,
-					Product.State.inStorage,
+					ProductCategory.clothes,
+					ProductState.inStorage,
 					"Norkovany kozuch",
 					500000.0,
 					"Kozuch z norky"

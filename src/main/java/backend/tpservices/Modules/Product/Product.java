@@ -1,47 +1,33 @@
 package backend.tpservices.Modules.Product;
 
+import Config.Constants.*;
 import backend.tpservices.Modules.General.Exceptions.Declarations.InvalidFormatException;
+import backend.tpservices.Modules.Review.ProductReview;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "Products")
 public class Product {
 
-   public enum State {
-        inStorage,
-        sold,
-        ReadyToOrder,
-        presale
-    }
-
-   public enum Category {
-        electronics,
-        whiteGoods,
-        houseAndGarden,
-        breeding,
-        babyGoods,
-        booksMoviesGames,
-        groceries,
-        cosmeticsAndHealth,
-        clothes,
-        sport,
-        furniture
-    }
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    Category category;
-    State state;
+    ProductCategory category;
+    ProductState state;
     String title;
     Double price;
     String description;
 
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "product_id")
+    private List<ProductReview> reviewList = new ArrayList<>();
+
     public Product() {}
 
-    public Product(Category category, State state, String title, Double price, String description) {
+    public Product(ProductCategory category, ProductState state, String title, Double price, String description) {
         this.category = category;
         this.state = state;
         this.title = title;
@@ -67,9 +53,11 @@ public class Product {
         }
     }
 
+    public void addReview(ProductReview review) { this.reviewList.add(review);}
+
     public Long getId() { return id; }
-    public Category getCategory() { return category; }
-    public State getState() { return state; }
+    public ProductCategory getCategory() { return category; }
+    public ProductState getState() { return state; }
     public String getTitle() {
         return title;
     }
@@ -81,8 +69,8 @@ public class Product {
     }
 
     public void setId(Long id) { this.id = id; }
-    public void setCategory(Category category) { this.category = category; }
-    public void setState(State state) { this.state = state; }
+    public void setCategory(ProductCategory category) { this.category = category; }
+    public void setState(ProductState state) { this.state = state; }
     public void setTitle(String title) {
         this.title = title;
     }

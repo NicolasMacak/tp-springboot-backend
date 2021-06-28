@@ -45,12 +45,13 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
-    @PutMapping()
-    private ResponseEntity<Product> modifyProduct(@RequestBody Product product){
+    @PutMapping(value = "/{productId}")
+    private ResponseEntity<Product> modifyProduct(@PathVariable final Long productId,
+                                                  @RequestBody Product product){
 
         product.verifyFields();
 
-        productService.modifyProduct(product);
+        productService.modifyProduct(productId, product);
         return new ResponseEntity<Product>(product, HttpStatus.OK);
     }
 

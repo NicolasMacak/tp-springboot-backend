@@ -29,8 +29,8 @@ public class ProductService {
 
     public Optional<Product> getProductById(Long id) { return productRepository.findById(id); }
 
-    public void modifyProduct(Product product){
-        Optional<Product> dbProduct = productRepository.findById(product.getId());
+    public void modifyProduct(Long id, Product product){
+        Optional<Product> dbProduct = productRepository.findById(id);
         if(dbProduct.isEmpty()) { return; }
 
         dbProduct.get().update(product);
