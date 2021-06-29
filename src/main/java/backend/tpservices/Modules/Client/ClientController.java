@@ -42,7 +42,7 @@ public class ClientController {
     @PostMapping()
     private ResponseEntity<SuccessObject> addClient(@RequestBody Client client) throws InvalidObjectException {
 
-        if(client.getContact().isInvalid()) {
+        if(!client.getContact().isValid()) {
             // ak by sme chceli byt strasne fancy, mohli by sme dat do response ake fieldy su zle
             throw new InvalidObjectException("Invalid contact fields");
         }
@@ -55,15 +55,18 @@ public class ClientController {
         return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
-    @PutMapping()
-    private ResponseEntity<String> modifyClient(@RequestBody Client client){
+    @PutMapping(value = "/{userId}")
+    private ResponseEntity<SuccessObject> modifyClient(@PathVariable final Long userId,
+                                                       @RequestBody Client client) throws InvalidObjectException, NoSuchObjectException {
 
-        if(client.getContact().isInvalid()) {
-            return new ResponseEntity<String>("Invalid contact fields", HttpStatus.BAD_REQUEST);
+        if(!client.getContact().isModifyValid()) throw new InvalidObjectException("Invalid contact fields");
+
+        if (clientService.modifyClient(userId, client)) {
+            SuccessObject success = new SuccessObject(HttpStatus.OK,
+                    "User with id = " + userId + " successfully modified");
+            return new ResponseEntity<>(success, HttpStatus.OK);
         }
-
-        clientService.modifyClient(client);
-        return new ResponseEntity<String>("User modified", HttpStatus.OK);
+        throw new NoSuchObjectException("User with id = " + userId + " not found");
     }
 
     @DeleteMapping(value = "/{userId}")

@@ -89,8 +89,8 @@ public class TpServicesApplication {
 			);
 
 			Product product = new Product(
-					Product.Category.clothes,
-					Product.State.inStorage,
+					Constants.ProductCategory.clothes,
+					Constants.ProductState.inStorage,
 					"Norkovany kozuch",
 					500000.0,
 					"Kozuch z norky"

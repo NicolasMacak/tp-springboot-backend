@@ -82,20 +82,21 @@ public class CompanyController {
         throw new NoSuchObjectException("Company with companyId = "+ companyId +" not found");
     }
 
-    @PutMapping()
-    public ResponseEntity<SuccessObject> modifyCompany(@RequestBody Company company) throws InvalidObjectException, NoSuchObjectException {
+    @PutMapping(value = "/{companyId}")
+    public ResponseEntity<SuccessObject> modifyCompany(@PathVariable("companyId") Long companyId,
+                                                       @RequestBody Company company) throws InvalidObjectException, NoSuchObjectException {
 
         if(!company.getAddress().isModifyValid()) throw new InvalidObjectException("Invalid company address fields");
         if(!company.isModifyValid()) throw new InvalidObjectException("Invalid company info fields");
 
-        if (companyService.modifyCompany(company)){
+        if (companyService.modifyCompany(companyId, company)){
             SuccessObject success = new SuccessObject(HttpStatus.OK,
-                    "Company with id = " + company.getId() + " successfully modified");
+                    "Company with id = " + companyId + " successfully modified");
             return new ResponseEntity<>(success, HttpStatus.OK);
             // TODO changed fields?
         }
 
-        throw new NoSuchObjectException("Company with id = "+ company.getId() +" not found");
+        throw new NoSuchObjectException("Company with id = "+ companyId +" not found");
 
     }
 }

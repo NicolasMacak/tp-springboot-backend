@@ -28,25 +28,28 @@ public class Contact {
         this.password = password;
     }
 
-    public Boolean isInvalid(){
-        boolean  isValid = true;
+    public Boolean isValid() {
+        return Pattern.matches(Constants.Regex.StringWithSpaces, firstName) &&
+               Pattern.matches(Constants.Regex.StringWithSpaces, lastName) &&
+               Pattern.matches(Constants.Regex.GlobalNumberFormat, phoneNumber) &&
+               Pattern.matches(Constants.Regex.Email, email) &&
+               Pattern.matches(Constants.Regex.Password, password);
+    }
 
-        isValid &= Pattern.matches(Constants.Regex.StringWithSpaces, firstName);
-        isValid &= Pattern.matches(Constants.Regex.StringWithSpaces, lastName);
-        isValid &= Pattern.matches(Constants.Regex.GlobalNumberFormat, phoneNumber);
-        isValid &= Pattern.matches(Constants.Regex.Email, email);
-        isValid &= Pattern.matches(Constants.Regex.Password, password);
-
-        return !isValid;
+    public Boolean isModifyValid() {
+        return (this.firstName== null || Pattern.matches(Constants.Regex.StringWithSpaces, this.firstName)) &&
+               (this.lastName == null || Pattern.matches(Constants.Regex.StringWithSpaces, this.lastName)) &&
+               (this.phoneNumber == null || Pattern.matches(Constants.Regex.GlobalNumberFormat, this.phoneNumber)) &&
+               (this.email == null || Pattern.matches(Constants.Regex.Email, this.email)) &&
+               (this.password == null || Pattern.matches(Constants.Regex.Password, this.password));
     }
 
     public void update(Contact contact){
-        this.id = contact.getId();
-        this.firstName = contact.getFirstName();
-        this.lastName = contact.getLastName();
-        this.phoneNumber = contact.getPhoneNumber();
-        this.email = contact.getEmail();
-        this.password = contact.getPassword();
+        this.firstName = contact.getFirstName() == null? this.firstName : contact.getFirstName();
+        this.lastName = contact.getLastName() == null? this.lastName : contact.getLastName();
+        this.phoneNumber = contact.getPhoneNumber() == null? this.phoneNumber : contact.getPhoneNumber();
+        this.email = contact.getEmail() == null? this.email : contact.getEmail();
+        this.password = contact.getPassword() == null? this.password : contact.getPassword();
     }
 
     public Long getId() { return id; }

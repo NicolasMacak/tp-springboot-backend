@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import backend.tpservices.Modules.Review.CompanyReview;
-import backend.tpservices.Modules.Company.Company;
-import backend.tpservices.Modules.Company.CompanyRepository;
 import backend.tpservices.Modules.Review.CompanyReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,8 +44,8 @@ public class CompanyService {
     }
 
     @Transactional
-    public boolean modifyCompany(Company company){
-        Optional<Company> dbCompany = companyRepository.findById(company.getId());
+    public boolean modifyCompany(Long id, Company company){
+        Optional<Company> dbCompany = companyRepository.findById(id);
 
         if(dbCompany.isEmpty()) return false;
 

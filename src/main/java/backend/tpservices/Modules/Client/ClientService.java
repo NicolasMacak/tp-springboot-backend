@@ -1,7 +1,5 @@
 package backend.tpservices.Modules.Client;
 
-import backend.tpservices.Modules.Client.Client;
-import backend.tpservices.Modules.Client.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,12 +39,13 @@ public class ClientService {
         clientRepository.save(client);
     }
     @Transactional
-    public void modifyClient(Client client){
-        Optional<Client> dbClient = clientRepository.findById(client.getId());
-        if(dbClient.isEmpty()) { return; }
+    public boolean modifyClient(Long id, Client client){
+        Optional<Client> dbClient = clientRepository.findById(id);
+        if(dbClient.isEmpty()) { return false; }
 
         dbClient.get().update(client);
         clientRepository.save(dbClient.get());
+        return true;
     }
     @Transactional
     public boolean deleteClient(Long id){
