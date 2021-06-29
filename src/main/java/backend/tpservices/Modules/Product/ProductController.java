@@ -63,6 +63,5 @@ public class ProductController {
        SuccessObject success = new SuccessObject(HttpStatus.OK,
                "User with id = " + productId + " successfully deleted");
        return new ResponseEntity<>(success, HttpStatus.OK);
-
     }
 }
