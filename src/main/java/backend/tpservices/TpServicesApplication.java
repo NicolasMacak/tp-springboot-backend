@@ -1,8 +1,10 @@
 package backend.tpservices;
 
-import Config.Constants.*;
+import Config.Constants;
 import backend.tpservices.Modules.Address.Address;
 import backend.tpservices.Modules.Contact.Contact;
+import backend.tpservices.Modules.Order.Order;
+import backend.tpservices.Modules.Order.OrderService;
 import backend.tpservices.Modules.Product.Product;
 import backend.tpservices.Modules.Client.Client;
 import backend.tpservices.Modules.Company.Company;
@@ -20,6 +22,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
 @SpringBootApplication
@@ -58,15 +63,16 @@ public class TpServicesApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(ClientService clientService, CompanyService companyService, ProductService productService){
+	public CommandLineRunner demo(ClientService clientService, CompanyService companyService, ProductService productService, OrderService orderService){
 		return (args -> { // db moze byt naplnena tu
 
-			clientService.insertClientToDb(
-					new Client(new Contact("Bojack",
-										   "Horseman",
-									    "+421452654280",
-									          "checkni.to@dost.cool",
-										   "Jablcko")));
+			Client client = new Client(new Contact("Bojack",
+					"Horseman",
+					"+421452654280",
+					"checkni.to@dost.cool",
+					"Jablcko"));
+
+			clientService.insertClientToDb(client);
 
 			clientService.insertClientToDb(
 					new Client(new Contact("Norika",
@@ -76,19 +82,30 @@ public class TpServicesApplication {
 											"ding dong")));
 
 			companyService.insertCompanyToDb(
-					new Company("Dedoles", CompanyType.KS,"00000000",
+					new Company("Dedoles", Constants.CompanyType.KS,"00000000",
 								"0000000000","SK0000000000",new Date(),
 								new Address("ulica","cislo","mesto", "00000")
 					)
 			);
 
-			productService.insertProductToDb(new Product(
-					ProductCategory.clothes,
-					ProductState.inStorage,
+			Product product = new Product(
+					Constants.ProductCategory.clothes,
+					Constants.ProductState.inStorage,
 					"Norkovany kozuch",
 					500000.0,
 					"Kozuch z norky"
-					));
+			);
+
+			productService.insertProductToDb(product);
+
+			orderService.insertOrderToDb(
+					new Order(
+							client,
+							Order.PaymentType.online,
+							new ArrayList<>(Collections.singletonList(product))
+					)
+			);
+
 
 //			Client client = new Client();
 //			Contact contact = new Contact("Bojack", "Horseman","+421 452 654 280", "checkni.to@dost.cool", "Jablcko");

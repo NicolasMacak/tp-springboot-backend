@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
    stackTrace       // ex.getStackTrace()
 */
 
-public class ErrorObject {
+public class ErrorObject extends ResponseObject{
 
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
    private LocalDateTime timestamp;

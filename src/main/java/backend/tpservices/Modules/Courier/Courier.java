@@ -2,7 +2,11 @@ package backend.tpservices.Modules.Courier;
 
 import backend.tpservices.Modules.Contact.Contact;
 import backend.tpservices.Modules.Review.Reviewable;
+import backend.tpservices.Modules.Order.Order;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Courier extends Reviewable {
@@ -10,18 +14,21 @@ public class Courier extends Reviewable {
     @OneToOne(orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Contact contact;
 
-//    @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
-//    @JoinColumn(name = "courier_id")
-//    private List<Order> orderList = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "courier_id")
+    private List<Order> orderList = new ArrayList<>();
 
     public Courier() {}
     public Courier(Contact contact) { this.contact = contact;}
 
 
     public Contact getContact() { return contact; }
+    public List<Order> getOrders() { return orderList; }
     public void setContact(Contact contact) {
         this.contact = contact;
     }
+    public void setId(Long id) { this.id = id; }
+    public void setOrders(List<Order> orderList) { this.orderList = orderList; }
 
 
     public void update(Courier courier){

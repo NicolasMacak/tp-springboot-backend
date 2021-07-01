@@ -50,7 +50,7 @@ public class ReviewService{
 
     private boolean addReview(Reviewable dbObject, Review review) {
         if(dbObject == null) return false;
-        
+
         if (review.getDate() == null) review.setDate(new Date());
 
         reviewRepository.save(review);
