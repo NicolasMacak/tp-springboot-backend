@@ -1,7 +1,8 @@
 package backend.tpservices.Modules.Company;
 import Config.Constants.*;
 import backend.tpservices.Modules.Address.Address;
-import backend.tpservices.Modules.Review.CompanyReview;
+import backend.tpservices.Modules.Product.Product;
+import backend.tpservices.Modules.Review.Reviewable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,10 +11,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Entity
-public class Company {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Company extends Reviewable {
     private String name;
     private CompanyType type;
     private String ico;
@@ -27,10 +25,7 @@ public class Company {
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "company_id")
-    private List<CompanyReview> reviewList = new ArrayList<>();;
-
-//    @OneToMany(cascade = CascadeType.PERSIST)
-//    private List<Product> productList;
+    private List<Product> productList = new ArrayList<>();
 
     public Company(){}
     public Company(String name, CompanyType type, String ico, String dic, String icDPH, Date creationDate) {
@@ -79,7 +74,7 @@ public class Company {
         this.address.update(company.getAddress());
     }
 
-    public void addReview(CompanyReview review) { this.reviewList.add(review);}
+    public void addProduct(Product product) { this.productList.add(product);}
 
     //-------------------------------------------------
 
@@ -120,16 +115,15 @@ public class Company {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-     public Address getAddress() {
+    public Address getAddress() {
          return address;
      }
-     public void setAddress(Address address) {
+    public void setAddress(Address address) {
          this.address = address;
      }
-    public List<CompanyReview> getReviewList() {
-        return reviewList;
+    public List<Product> getProductList() {
+        return productList;
     }
-
     @Override
     public String toString() {
         return "Company{" +
@@ -143,4 +137,4 @@ public class Company {
                 ", address=" + address +
                 '}';
     }
-}  
+}

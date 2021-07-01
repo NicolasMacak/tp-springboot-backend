@@ -1,6 +1,9 @@
 package backend.tpservices.Modules.Product;
 
 import backend.tpservices.Modules.General.ResponseObjects.SuccessObject;
+import backend.tpservices.Modules.Review.ProductReview;
+import backend.tpservices.Modules.Review.Review;
+import backend.tpservices.Modules.Review.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +13,7 @@ import javax.persistence.NoResultException;
 import java.io.InvalidObjectException;
 import java.rmi.NoSuchObjectException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("product")
@@ -17,6 +21,8 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+    @Autowired
+    ReviewService reviewService;
 
     @GetMapping()
     private ResponseEntity<List<Product>> getAllProducts(){
@@ -65,5 +71,32 @@ public class ProductController {
                "User with id = " + productId + " successfully deleted");
        return new ResponseEntity<>(success, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/{productId}/review")
+    private List<Review> getReviewsById(@PathVariable("productId") Long productId) throws NoSuchObjectException {
+        Optional<Product> optProduct = productService.getProductById(productId);
+        if (optProduct.isPresent()) {
+
+            List<Review> reviews = optProduct.get().getReviewList();
+            if(reviews.isEmpty()) throw new NoResultException();
+
+            return reviews;
+        }
+        throw new NoSuchObjectException("Product with productId = " + productId + " not found");
+    }
+
+    @PostMapping("/{productId}/review")
+    private ResponseEntity<SuccessObject> addReview(@PathVariable("productId") Long productId,
+                                                    @RequestBody ProductReview review) throws InvalidObjectException, NoSuchObjectException {
+
+        if (!review.isValid()) throw new InvalidObjectException("Invalid review fields");
+
+        if (reviewService.addProductReview(productId, review)) {
+            SuccessObject success = new SuccessObject(HttpStatus.OK,
+                    "Review successfully added");
+            return new ResponseEntity<>(success, HttpStatus.OK);
+        }
+        throw new NoSuchObjectException("Product with productId = " + productId + " not found");
     }
 }

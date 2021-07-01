@@ -5,8 +5,13 @@ import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.Optional;
 
+import backend.tpservices.Modules.Courier.Courier;
+import backend.tpservices.Modules.Product.Product;
+import backend.tpservices.Modules.Product.ProductService;
 import backend.tpservices.Modules.Review.CompanyReview;
 import backend.tpservices.Modules.General.ResponseObjects.SuccessObject;
+import backend.tpservices.Modules.Review.Review;
+import backend.tpservices.Modules.Review.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,29 +24,44 @@ import javax.persistence.NoResultException;
 public class CompanyController {
     @Autowired
     CompanyService companyService;
+    @Autowired
+    ReviewService reviewService;
+    @Autowired
+    ProductService productService;
 
     @GetMapping()
-    private List<Company> getAllCompanies() {
-        return companyService.getAllCompanies().orElseThrow(NoResultException::new);
+    private ResponseEntity<List<Company>> getAllCompanies() {
+        List<Company> dbCompanyList = companyService.getAllCompanies().orElseThrow(NoResultException::new);
+        return new ResponseEntity<>(dbCompanyList,HttpStatus.OK);
     }
 
     @GetMapping("/{companyId}")
-    private Company getCompanyById(@PathVariable("companyId") Long companyId) throws NoSuchObjectException {
+    private ResponseEntity<Company> getCompanyById(@PathVariable("companyId") Long companyId) throws NoSuchObjectException {
+        Company company = companyService
+                .getCompanyById(companyId)
+                .orElseThrow(() -> new NoSuchObjectException("Company with companyId = " + companyId + " not found"));
 
-        return companyService.getCompanyById(companyId)
-                             .orElseThrow(() -> new NoSuchObjectException("Company with companyId = " +
-                                                                          companyId + " not found"));
+        return new ResponseEntity<>(company,HttpStatus.OK);
     }
 
     @GetMapping("/{companyId}/review")
-    private List<CompanyReview> getReviewsById(@PathVariable("companyId") Long companyId) throws NoSuchObjectException {
+    private ResponseEntity<List<Review>> getReviewsById(@PathVariable("companyId") Long companyId) throws NoSuchObjectException {
         Optional<Company> optCompany = companyService.getCompanyById(companyId);
         if (optCompany.isPresent()) {
-
-            List<CompanyReview> reviews = optCompany.get().getReviewList();
+            List<Review> reviews = optCompany.get().getReviewList();
             if(reviews.isEmpty()) throw new NoResultException();
+            return new ResponseEntity<>(reviews, HttpStatus.OK);
+        }
+        throw new NoSuchObjectException("Company with companyId = " + companyId + " not found");
+    }
 
-            return reviews;
+    @GetMapping("/{companyId}/product")
+    private ResponseEntity<List<Product>> getProductsById(@PathVariable("companyId") Long companyId) throws NoSuchObjectException {
+        Optional<Company> optCompany = companyService.getCompanyById(companyId);
+        if (optCompany.isPresent()) {
+            List<Product> products = optCompany.get().getProductList();
+            if(products.isEmpty()) throw new NoResultException();
+            return new ResponseEntity<>(products, HttpStatus.OK);
         }
         throw new NoSuchObjectException("Company with companyId = " + companyId + " not found");
     }
@@ -64,9 +84,23 @@ public class CompanyController {
 
         if(!review.isValid()) throw new InvalidObjectException("Invalid review fields");
 
-        if (companyService.addCompanyReview(companyId,review)) {
+        if (reviewService.addCompanyReview(companyId,review)) {
             SuccessObject success = new SuccessObject(HttpStatus.OK,
                                               "Review successfully added");
+            return new ResponseEntity<>(success, HttpStatus.OK);
+        }
+        throw new NoSuchObjectException("Company with companyId = "+ companyId +" not found");
+    }
+
+    @PostMapping("/{companyId}/product")
+    private ResponseEntity<SuccessObject> addProduct(@PathVariable("companyId") Long companyId,
+                                                    @RequestBody Product product) throws NoSuchObjectException {
+
+        product.verifyFields();
+//        if(!product.isValid()) throw new InvalidObjectException("Invalid product fields");
+
+        if (productService.addCompanyProduct(companyId,product)) {
+            SuccessObject success = new SuccessObject(HttpStatus.OK,"Product successfully added");
             return new ResponseEntity<>(success, HttpStatus.OK);
         }
         throw new NoSuchObjectException("Company with companyId = "+ companyId +" not found");

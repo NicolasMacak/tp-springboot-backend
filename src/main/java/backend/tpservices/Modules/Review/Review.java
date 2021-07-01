@@ -3,7 +3,8 @@ package backend.tpservices.Modules.Review;
 import javax.persistence.*;
 import java.util.Date;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

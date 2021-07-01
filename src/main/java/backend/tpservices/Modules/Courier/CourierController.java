@@ -1,6 +1,9 @@
 package backend.tpservices.Modules.Courier;
 
 import backend.tpservices.Modules.General.ResponseObjects.SuccessObject;
+import backend.tpservices.Modules.Review.CourierReview;
+import backend.tpservices.Modules.Review.Review;
+import backend.tpservices.Modules.Review.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,19 +13,20 @@ import javax.persistence.NoResultException;
 import java.io.InvalidObjectException;
 import java.rmi.NoSuchObjectException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("courier")
 public class CourierController {
     @Autowired
     CourierService courierService;
+    @Autowired
+    ReviewService reviewService;
 
     @GetMapping()
     private ResponseEntity<List<Courier>> getAllCouriers(){
         List<Courier> couriers = courierService.getAllCouriers().orElseThrow(NoResultException::new);
-
-        return couriers.isEmpty() ? new ResponseEntity<>(HttpStatus.NO_CONTENT):
-                new ResponseEntity<>(couriers, HttpStatus.OK);
+        return new ResponseEntity<>(couriers, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{courierId}")
@@ -32,6 +36,17 @@ public class CourierController {
                 .orElseThrow(() -> new NoSuchObjectException("Courier with id = "+courierId+" not found"));
 
         return new ResponseEntity<>(courier, HttpStatus.OK);
+    }
+
+    @GetMapping("/{courierId}/review")
+    private ResponseEntity<List<Review>> getReviewsById(@PathVariable("courierId") Long courierId) throws NoSuchObjectException {
+        Optional<Courier> optCourier = courierService.getCourierById(courierId);
+        if (optCourier.isPresent()) {
+            List<Review> reviews = optCourier.get().getReviewList();
+            if(reviews.isEmpty()) throw new NoResultException();
+            return new ResponseEntity<>(reviews,HttpStatus.OK);
+        }
+        throw new NoSuchObjectException("Courier with courierId = " + courierId + " not found");
     }
 
     @PostMapping()
@@ -47,6 +62,19 @@ public class CourierController {
                         + " successfully added");
 
         return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
+    @PostMapping("/{courierId}/review")
+    private ResponseEntity<SuccessObject> addReview(@PathVariable("courierId") Long courierId,
+                                                    @RequestBody CourierReview review) throws InvalidObjectException, NoSuchObjectException {
+
+        if(!review.isValid()) throw new InvalidObjectException("Invalid review fields");
+
+        if (reviewService.addCourierReview(courierId,review)) {
+            SuccessObject success = new SuccessObject(HttpStatus.OK, "Review successfully added");
+            return new ResponseEntity<>(success, HttpStatus.OK);
+        }
+        throw new NoSuchObjectException("Courier with courierId = "+ courierId +" not found");
     }
 
     @PutMapping(value = "/{courierId}")

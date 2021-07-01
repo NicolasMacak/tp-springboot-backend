@@ -1,12 +1,8 @@
 package backend.tpservices.Modules.Company;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import backend.tpservices.Modules.Review.CompanyReview;
-import backend.tpservices.Modules.Review.CompanyReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
-    @Autowired
-    CompanyReviewRepository reviewRepository;
 
     public Optional<List<Company>> getAllCompanies(){
         List<Company> companyList = new ArrayList<>();
@@ -51,21 +45,6 @@ public class CompanyService {
 
         dbCompany.get().update(company);
         companyRepository.save(dbCompany.get());
-        return true;
-    }
-
-    @Transactional
-    public boolean addCompanyReview(Long companyId, CompanyReview review) {
-        Optional<Company> dbCompany = companyRepository.findById(companyId);
-
-        if(dbCompany.isEmpty()) return false;
-
-        if (review.getDate() == null) review.setDate(new Date());
-
-        reviewRepository.save(review);
-        dbCompany.get().addReview(review);
-        companyRepository.save(dbCompany.get());
-
         return true;
     }
 
