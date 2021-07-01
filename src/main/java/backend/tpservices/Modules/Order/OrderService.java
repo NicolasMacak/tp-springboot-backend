@@ -1,5 +1,7 @@
 package backend.tpservices.Modules.Order;
 
+import backend.tpservices.Modules.Courier.Courier;
+import backend.tpservices.Modules.Courier.CourierRepository;
 import backend.tpservices.Modules.Order.Order;
 import backend.tpservices.Modules.Order.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ import java.util.Optional;
 public class OrderService {
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    CourierRepository courierRepository;
 
     public Optional<List<Order>> getAllOrders(){
         List<Order> orders = new ArrayList<>();
@@ -38,10 +43,19 @@ public class OrderService {
 
     public void deleteOrder(Long id) throws NoSuchObjectException {
         Optional<Order> dbOrder = orderRepository.findById(id);
-        if(dbOrder.isEmpty()) {
-            throw new NoSuchObjectException("Order id: "+id+" not found");
-        }
+        if(dbOrder.isEmpty()) { throw new NoSuchObjectException("Order id: "+id+" not found"); }
 
         orderRepository.delete(dbOrder.get());
+    }
+
+    public void assignOrderToCourier(Long orderId, Long courierId) throws NoSuchObjectException {
+        Optional<Order> dbOrder = orderRepository.findById(orderId);
+        if(dbOrder.isEmpty()) { throw new NoSuchObjectException("Order id: "+orderId+" not found"); }
+
+        Optional<Courier> dbCourier = courierRepository.findById(courierId);
+        if(dbCourier.isEmpty()) { throw new NoSuchObjectException("Courier id: "+courierId+" not found"); }
+
+        dbCourier.get().getOrders().add(dbOrder.get());
+        courierRepository.save(dbCourier.get());
     }
 }

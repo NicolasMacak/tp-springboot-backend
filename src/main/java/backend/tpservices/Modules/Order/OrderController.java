@@ -1,8 +1,7 @@
 package backend.tpservices.Modules.Order;
 
+import backend.tpservices.Modules.General.ResponseObjects.ResponseObject;
 import backend.tpservices.Modules.General.ResponseObjects.SuccessObject;
-import backend.tpservices.Modules.Order.Order;
-import backend.tpservices.Modules.Order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,5 +64,13 @@ public class OrderController {
         SuccessObject success = new SuccessObject(HttpStatus.OK,
                 "User with id = " + orderId + " successfully deleted");
         return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/assign/orderId/{orderId}/courierId/{courierId}")
+    private ResponseEntity<ResponseObject> assignOrderToCourier(@PathVariable final Long orderId, @PathVariable final Long courierId) throws NoSuchObjectException {
+
+        orderService.assignOrderToCourier(orderId, courierId);
+
+        return new ResponseEntity<>(new SuccessObject("Order "+orderId+" assigned to courier "+courierId), HttpStatus.OK);
     }
 }
