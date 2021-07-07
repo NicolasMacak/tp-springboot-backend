@@ -26,7 +26,7 @@ public class ErrorObject extends ResponseObject{
    private String message;
    private String localizedMessage;
 
-   private ErrorObject() {
+   public ErrorObject() {
        timestamp = LocalDateTime.now();
    }
 

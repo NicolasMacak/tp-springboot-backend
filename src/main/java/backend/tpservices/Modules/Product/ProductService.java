@@ -2,16 +2,21 @@ package backend.tpservices.Modules.Product;
 
 import backend.tpservices.Modules.Product.Product;
 import backend.tpservices.Modules.Product.ProductRepository;
+import backend.tpservices.TpServicesApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.rmi.NoSuchObjectException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
+
+    private static final Logger log = LoggerFactory.getLogger(TpServicesApplication.class);
 
     @Autowired
     ProductRepository productRepository;
@@ -44,5 +49,15 @@ public class ProductService {
         }
 
         productRepository.delete(dbProduct.get());
+    }
+
+    public List<Product> editProducts(Map<Long, Product> products){
+        List<Product> dbProducts = productRepository.findProductsByIdList(products.keySet());
+
+        for(Product dbProduct: dbProducts){
+            dbProduct.update(products.get(dbProduct.getId()));
+        }
+
+        return  (List<Product>) productRepository.saveAll(dbProducts);
     }
 }

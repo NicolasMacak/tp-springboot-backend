@@ -1,7 +1,9 @@
 package backend.tpservices.Modules.Order;
 
+import backend.tpservices.Modules.General.ResponseObjects.ErrorObject;
 import backend.tpservices.Modules.General.ResponseObjects.ResponseObject;
 import backend.tpservices.Modules.General.ResponseObjects.SuccessObject;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,7 @@ public class OrderController {
     }
 
     @PostMapping()
-    private ResponseEntity<Order> addOrder(@RequestBody Order order) throws InvalidObjectException {
+    private ResponseEntity<Order> addOrder(@RequestBody Order order) throws InvalidObjectException, NoSuchObjectException {
 
         order.verifyFields();
 
@@ -47,12 +49,17 @@ public class OrderController {
     }
 
     @PutMapping(value = "/{orderId}")
-    private ResponseEntity<Order> modifyOrder(@PathVariable final Long orderId, @RequestBody Order order){
+    private ResponseEntity<ResponseObject> modifyOrder(@PathVariable final Long orderId, @RequestBody Order order){
 
         order.verifyFields();
         order.setId(orderId);
-        orderService.modifyOrder(order);
-        return new ResponseEntity<>(order, HttpStatus.OK);
+        Order updatedOrder = orderService.modifyOrder(order);
+
+        if(updatedOrder == null){
+            return new ResponseEntity<>(new ErrorObject(), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new SuccessObject(updatedOrder), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{orderId}")

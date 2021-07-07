@@ -6,7 +6,9 @@ import backend.tpservices.Modules.Review.ProductReview;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "Products")
@@ -41,6 +43,20 @@ public class Product {
         this.title = product.getTitle();
         this.price = product.getPrice();
         this.description = product.getDescription();
+    }
+
+    public static Map<Long, Product> listToMap(List<Product> products){
+        Map<Long, Product> productsMap = new HashMap<>();
+
+        for(Product product: products){
+            if(product.getId() == null){
+                continue;
+            }
+            Long productId = product.getId();
+            productsMap.put(productId, product);
+        }
+
+        return productsMap;
     }
 
     public void verifyFields(){ // socialny experiment. Vracia kde presne sa stala aka chyba

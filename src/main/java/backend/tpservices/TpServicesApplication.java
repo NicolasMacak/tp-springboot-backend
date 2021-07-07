@@ -22,10 +22,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 @SpringBootApplication
 
@@ -88,23 +85,30 @@ public class TpServicesApplication {
 					)
 			);
 
-			Product product = new Product(
-					Constants.ProductCategory.clothes,
-					Constants.ProductState.inStorage,
-					"Norkovany kozuch",
-					500000.0,
-					"Kozuch z norky"
-			);
+			//productService.insertProductToDb(product);
+			List<Product> products = new ArrayList<>();
 
-			productService.insertProductToDb(product);
+			for(int i=0; i<5; i++){
+				products.add(
+						new Product(
+								Constants.ProductCategory.clothes,
+								Constants.ProductState.inStorage,
+								"Norkovany kozuch" + i,
+								(double) i,
+								"Kozuch z norky"
+						)
+				);
+			}
 
 			orderService.insertOrderToDb(
 					new Order(
 							client,
 							Order.PaymentType.online,
-							new ArrayList<>(Collections.singletonList(product))
+							products//new ArrayList<>(Collections.singletonList(product))
 					)
 			);
+
+
 
 
 //			Client client = new Client();
