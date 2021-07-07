@@ -1,9 +1,14 @@
 package backend.tpservices.Modules.Product;
 
+import backend.tpservices.Modules.General.ResponseObjects.ResponseObject;
 import backend.tpservices.Modules.General.ResponseObjects.SuccessObject;
 import backend.tpservices.Modules.Review.ProductReview;
 import backend.tpservices.Modules.Review.Review;
 import backend.tpservices.Modules.Review.ReviewService;
+import backend.tpservices.Modules.Order.Order;
+import backend.tpservices.TpServicesApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.NoResultException;
 import java.io.InvalidObjectException;
 import java.rmi.NoSuchObjectException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("product")
@@ -70,6 +77,18 @@ public class ProductController {
        SuccessObject success = new SuccessObject(HttpStatus.OK,
                "User with id = " + productId + " successfully deleted");
        return new ResponseEntity<>(success, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/multiedit")
+    private ResponseEntity<ResponseObject> multipleProductEdit(@RequestBody List<Product> products) throws NoSuchObjectException {
+        Map<Long, Product> productMap = Product.listToMap(products);
+
+        List<Product> updatedProducts = productService.editProducts(productMap);
+
+        SuccessObject success = new SuccessObject(updatedProducts,
+                products.size() == updatedProducts.size() ? "" : products.size() - updatedProducts.size()+" items not updated. Missing id or not found in database");
+
+        return new ResponseEntity<>(success, HttpStatus.OK);
     }
 
     @GetMapping("/{productId}/review")

@@ -14,6 +14,18 @@ public class SuccessObject extends ResponseObject {
         this.message = message;
     }
 
+    public SuccessObject(Object data) {
+        this.status = HttpStatus.OK.value();
+        this.message = "";
+        this.data = data;
+    }
+
+    public SuccessObject(Object data, String message) {
+        this.status = HttpStatus.OK.value();
+        this.message = message;
+        this.data = data;
+    }
+
     public SuccessObject(HttpStatus status, String message) {
         this.status = status.value();
         this.message = message;
