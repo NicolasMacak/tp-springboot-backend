@@ -1,9 +1,12 @@
 package backend.tpservices.Modules.Company;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +15,14 @@ public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
 
-    public Optional<List<Company>> getAllCompanies(){
-        List<Company> companyList = new ArrayList<>();
-        companyRepository.findAll().forEach(companyList::add);
-        return Optional.ofNullable(companyList.isEmpty()? null : companyList);
+    public  Optional<Page<Company>> getAllCompanies(Integer pageNo, Integer pageSize,
+                                                    String sortBy, Sort.Direction direction) {
+
+        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(direction, sortBy));
+
+        Page<Company> pagedResult = companyRepository.findAll(paging);
+
+        return pagedResult.hasContent() ? Optional.of(pagedResult) : Optional.empty();
     }
 
     public Optional<Company> getCompanyById(Long id){

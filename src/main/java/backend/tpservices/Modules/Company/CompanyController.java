@@ -5,7 +5,7 @@ import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.Optional;
 
-import backend.tpservices.Modules.Courier.Courier;
+import backend.tpservices.Modules.General.ResponseObjects.PaginatedObject;
 import backend.tpservices.Modules.Product.Product;
 import backend.tpservices.Modules.Product.ProductService;
 import backend.tpservices.Modules.Review.CompanyReview;
@@ -13,6 +13,8 @@ import backend.tpservices.Modules.General.ResponseObjects.SuccessObject;
 import backend.tpservices.Modules.Review.Review;
 import backend.tpservices.Modules.Review.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +32,23 @@ public class CompanyController {
     ProductService productService;
 
     @GetMapping()
-    private ResponseEntity<List<Company>> getAllCompanies() {
-        List<Company> dbCompanyList = companyService.getAllCompanies().orElseThrow(NoResultException::new);
-        return new ResponseEntity<>(dbCompanyList,HttpStatus.OK);
+    private ResponseEntity<PaginatedObject> getAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
+                                                            @RequestParam(defaultValue = "10") Integer pageSize,
+                                                            @RequestParam (value = "sortBy", defaultValue = "id") String sortBy,
+                                                            @RequestParam (value = "order", defaultValue = "asc") String order) {
+
+        Sort.Direction direction = order.equals("asc") ?  Sort.Direction.ASC : Sort.Direction.DESC;
+
+        Page<Company> companiesPage = companyService.getAllCompanies(pageNo, pageSize, sortBy, direction)
+                                                    .orElseThrow(NoResultException::new);
+
+        PaginatedObject paginatedCompanyList =  new PaginatedObject(companiesPage.getContent(),
+                                                                    companiesPage.getTotalElements(),
+                                                                    companiesPage.getTotalPages(),
+                                                                    companiesPage.getNumber());
+
+        return new ResponseEntity<>(paginatedCompanyList, HttpStatus.OK);
+
     }
 
     @GetMapping("/{companyId}")

@@ -59,9 +59,123 @@ public class TpServicesApplication {
 
 	}
 
+	public void insertStrasneVelaCompanies(CompanyService companyService) {
+		companyService.insertCompanyToDb(
+				new Company("Dedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Aedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Cedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Bedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Dedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Aedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Cedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Bedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Dedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Aedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Cedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Bedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Dedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Aedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Cedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+
+		companyService.insertCompanyToDb(
+				new Company("Bedoles", Constants.CompanyType.KS,"00000000",
+						"0000000000","SK0000000000",new Date(),
+						new Address("ulica","cislo","mesto", "00000")
+				)
+		);
+	}
+
 	@Bean
 	public CommandLineRunner demo(ClientService clientService, CompanyService companyService, ProductService productService, OrderService orderService){
-		return (args -> { // db moze byt naplnena tu
+		return (args -> {
 
 			Client client = new Client(new Contact("Bojack",
 					"Horseman",
@@ -74,16 +188,11 @@ public class TpServicesApplication {
 			clientService.insertClientToDb(
 					new Client(new Contact("Norika",
 											"Mojsejova",
-							             "+421 123 123 123",
+							             "+421123123123",
 											   "nevolajtemi@nepistemi.maily",
-											"ding dong")));
+											"aabbCC00")));
 
-			companyService.insertCompanyToDb(
-					new Company("Dedoles", Constants.CompanyType.KS,"00000000",
-								"0000000000","SK0000000000",new Date(),
-								new Address("ulica","cislo","mesto", "00000")
-					)
-			);
+			insertStrasneVelaCompanies(companyService);
 
 			//productService.insertProductToDb(product);
 			List<Product> products = new ArrayList<>();
@@ -108,25 +217,6 @@ public class TpServicesApplication {
 					)
 			);
 
-
-
-
-//			Client client = new Client();
-//			Contact contact = new Contact("Bojack", "Horseman","+421 452 654 280", "checkni.to@dost.cool", "Jablcko");
-//			client.setContact(contact);
-//			clientRepo.save(client);
-
-			//repository.save(new Client("Bojack", "Horsemano"));
-//			repository.save(new Client("Mr.", "PeanutButter"));
-/*
-			log.info("Clients found with findAll():");
-
-			for (Client client : repository.findAll()) {
-				log.info(client.toString());
-			}
-			log.info("--------------------------------");
-			Client client = repository.findByFirstName("Bojack");
-			log.info(client.toString());*/
 		});
 	}
 }
