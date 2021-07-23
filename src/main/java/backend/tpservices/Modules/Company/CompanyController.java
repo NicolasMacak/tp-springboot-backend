@@ -5,6 +5,7 @@ import java.rmi.NoSuchObjectException;
 import java.util.List;
 import java.util.Optional;
 
+import backend.tpservices.Modules.General.Filter.SearchCriteriaParser;
 import backend.tpservices.Modules.General.ResponseObjects.PaginatedObject;
 import backend.tpservices.Modules.Product.Product;
 import backend.tpservices.Modules.Product.ProductService;
@@ -31,17 +32,26 @@ public class CompanyController {
     @Autowired
     ProductService productService;
 
+    // TODO CompanyType robi bordel pri porovnavani - treba nejako mapovat string na CompanyType
+    // TODO uz je pri filtrovani dlha url. mozno robit filter ako POST?
+    // TODO co ak chcem filtrovat podla adresy?
+
     @GetMapping()
     private ResponseEntity<PaginatedObject> getAllCompanies(@RequestParam(defaultValue = "0") Integer pageNo,
                                                             @RequestParam(defaultValue = "10") Integer pageSize,
                                                             @RequestParam (value = "sortBy", defaultValue = "id") String sortBy,
-                                                            @RequestParam (value = "order", defaultValue = "asc") String order) {
+                                                            @RequestParam (value = "order", defaultValue = "asc") String order,
+                                                            @RequestParam (value = "filter", required = false) String filter) {
 
+        // order
         Sort.Direction direction = order.equals("asc") ?  Sort.Direction.ASC : Sort.Direction.DESC;
 
-        Page<Company> companiesPage = companyService.getAllCompanies(pageNo, pageSize, sortBy, direction)
-                                                    .orElseThrow(NoResultException::new);
+        // filter
+        Optional<CompanySpecification> spec = Optional.of(
+                new CompanySpecification(SearchCriteriaParser.parse(filter)));
 
+        // pagination
+        Page<Company> companiesPage = companyService.getAllCompanies(pageNo, pageSize, sortBy, direction, spec);
         PaginatedObject paginatedCompanyList =  new PaginatedObject(companiesPage.getContent(),
                                                                     companiesPage.getTotalElements(),
                                                                     companiesPage.getTotalPages(),

@@ -2,7 +2,7 @@ package Config;
 
 public final class Constants {
 
-    private Constants(){} // restrict initialization
+    private Constants() {} // restrict initialization
 
     public static final class Regex {
         public static final String StringWithSpaces = "([a-zA-Z]| )*";
@@ -16,8 +16,8 @@ public final class Constants {
     }
 
     public enum CompanyType {
-        VOS ("Verejná obchodná spoločnosť"),
-        KS ("Komanditná spoločnosť"),
+        VOS("Verejná obchodná spoločnosť"),
+        KS("Komanditná spoločnosť"),
         SRO("Spoločnosť s ručením obmedzeným"),
         AS("Akciová spoločnosť");
 
@@ -52,5 +52,23 @@ public final class Constants {
         clothes,
         sport,
         furniture
+    }
+
+    public enum SearchOperation {
+        GREATER_THAN,LESS_THAN,NOT_EQUAL,EQUAL;
+        /*
+        GREATER_THAN_EQUAL,LESS_THAN_EQUAL,
+        MATCH,MATCH_START,MATCH_END,
+        IN,NOT_IN
+        */
+        public static SearchOperation getOperation(String input) {
+            return switch (input) {
+                case ">" -> GREATER_THAN;
+                case "<" -> LESS_THAN;
+                case "!" -> NOT_EQUAL;
+                case ":" -> EQUAL;
+                default -> null;
+            };
+        }
     }
 }

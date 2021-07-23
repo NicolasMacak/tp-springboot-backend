@@ -1,16 +1,12 @@
 package backend.tpservices;
 
-import Config.Constants;
-import backend.tpservices.Modules.Address.Address;
-import backend.tpservices.Modules.Contact.Contact;
-import backend.tpservices.Modules.Order.Order;
-import backend.tpservices.Modules.Order.OrderService;
-import backend.tpservices.Modules.Product.Product;
-import backend.tpservices.Modules.Client.Client;
-import backend.tpservices.Modules.Company.Company;
-import backend.tpservices.Modules.Client.ClientService;
-import backend.tpservices.Modules.Company.CompanyService;
-import backend.tpservices.Modules.Product.ProductService;
+import Config.Constants.*;
+import backend.tpservices.Modules.Address.*;
+import backend.tpservices.Modules.Contact.*;
+import backend.tpservices.Modules.Order.*;
+import backend.tpservices.Modules.Product.*;
+import backend.tpservices.Modules.Client.*;
+import backend.tpservices.Modules.Company.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -60,117 +56,73 @@ public class TpServicesApplication {
 	}
 
 	public void insertStrasneVelaCompanies(CompanyService companyService) {
-		companyService.insertCompanyToDb(
-				new Company("Dedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
 
-		companyService.insertCompanyToDb(
-				new Company("Aedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
+		companyService.insertAllCompaniesToDb(Arrays.asList(
+				new Company("Dedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Aedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Cedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Bedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Dedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Aedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Cedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Bedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Dedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Aedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Cedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Bedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Dedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Aedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Cedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
+				),
+				new Company("Bedoles", CompanyType.KS, "00000000",
+						"0000000000", "SK0000000000", new Date(),
+						new Address("ulica", "cislo", "mesto", "00000")
 				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Cedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Bedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Dedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Aedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Cedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Bedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Dedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Aedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Cedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Bedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Dedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Aedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Cedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
-
-		companyService.insertCompanyToDb(
-				new Company("Bedoles", Constants.CompanyType.KS,"00000000",
-						"0000000000","SK0000000000",new Date(),
-						new Address("ulica","cislo","mesto", "00000")
-				)
-		);
+		));
 	}
 
 	@Bean
@@ -200,8 +152,8 @@ public class TpServicesApplication {
 			for(int i=0; i<5; i++){
 				products.add(
 						new Product(
-								Constants.ProductCategory.clothes,
-								Constants.ProductState.inStorage,
+								ProductCategory.clothes,
+								ProductState.inStorage,
 								"Norkovany kozuch" + i,
 								(double) i,
 								"Kozuch z norky"

@@ -1,6 +1,7 @@
 package backend.tpservices.Modules.Company;
 
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,14 +16,18 @@ public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
 
-    public  Optional<Page<Company>> getAllCompanies(Integer pageNo, Integer pageSize,
-                                                    String sortBy, Sort.Direction direction) {
+    public  Page<Company> getAllCompanies(Integer pageNo, Integer pageSize,
+                                                    String sortBy, Sort.Direction direction,
+                                                    Optional<CompanySpecification> spec) {
+
 
         Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(direction, sortBy));
 
-        Page<Company> pagedResult = companyRepository.findAll(paging);
+        Page<Company> pagedResult = spec.map(companySpecification ->
+                                                companyRepository.findAll(companySpecification, paging))
+                                                                 .orElseGet(() -> companyRepository.findAll(paging));
 
-        return pagedResult.hasContent() ? Optional.of(pagedResult) : Optional.empty();
+        return pagedResult;
     }
 
     public Optional<Company> getCompanyById(Long id){
@@ -30,9 +35,12 @@ public class CompanyService {
     }
 
     @Transactional
-    public void insertCompanyToDb(Company student)
-    {
-    companyRepository.save(student);
+    public void insertCompanyToDb(Company company)  {
+    companyRepository.save(company);
+    }
+    @Transactional
+    public void insertAllCompaniesToDb(List<Company> companyList)  {
+        companyRepository.saveAll(companyList);
     }
 
     @Transactional
